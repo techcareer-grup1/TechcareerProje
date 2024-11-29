@@ -20,7 +20,7 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<T
         Context = context;
     }
 
-    public async Task<TEntity> AddAsync(TEntity entity)
+    public async Task<TEntity> AddAsync(TEntity entity) 
     {
         entity.CreatedDate = DateTime.UtcNow;
         await Context.AddAsync(entity);
