@@ -44,7 +44,7 @@ namespace TechCareer.Service.Concretes
                 throw new BusinessException("İgili id ye göre kategori bulunamadı.");
 
             }
-            await _categoryRepository.DeleteAsync(category);
+            await _categoryRepository.DeleteAsync(category,true);
         }
 
         public async Task<List<CategoryResponseDto>> GetAllAsync()

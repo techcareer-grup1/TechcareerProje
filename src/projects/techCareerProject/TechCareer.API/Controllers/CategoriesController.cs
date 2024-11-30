@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TechCareer.Models.Dtos.Categories.Requests;
 using TechCareer.Service.Abstracts;
 
 namespace TechCareer.API.Controllers
@@ -18,5 +19,24 @@ namespace TechCareer.API.Controllers
         
         
         }
+
+        [HttpPost("Add")]
+        public async Task<IActionResult> Add(CategoryAddRequestDto dto) 
+        {
+
+            await categoryService.AddAsync(dto);
+
+            return Ok(dto);
+        }
+
+        [HttpPost("Delete")]
+        public async Task<IActionResult> Delete(int id)
+        {
+
+            await categoryService.DeleteAsync(id);
+
+            return Ok(id);
+        }
+
     }
 }

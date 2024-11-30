@@ -12,7 +12,7 @@ using TechCareer.Service.Concretes;
 
 namespace TechCareer.Service;
 
-public static class BusinessServiceRegistration
+public static class BusinessServiceRegistrationB
 {
     public static IServiceCollection AddServiceDependencies(this IServiceCollection services)
     { 
