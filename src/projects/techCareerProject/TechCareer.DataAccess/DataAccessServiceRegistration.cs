@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Core.Security.Repositories.Abstracts;
+using Core.Security.Repositories.Concretes;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TechCareer.DataAccess.Contexts;
@@ -17,6 +19,7 @@ public static class DataAccessServiceRegistration
         services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IOperationClaimRepository,OperationClaimRepository>();
+        services.AddScoped<IEventRepository, EventRepository>();
         services.AddScoped<IInstructorRepository, InstructorRepository>();
         services.AddScoped<IVideoEduRepository, VideoEduRepository>();
         services.AddDbContext<BaseDbContext>(opt =>
