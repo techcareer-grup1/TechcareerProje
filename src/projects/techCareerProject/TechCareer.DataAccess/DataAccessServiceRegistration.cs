@@ -11,6 +11,8 @@ public static class DataAccessServiceRegistration
 {
     public static IServiceCollection AddDataAccessServices(this IServiceCollection services,IConfiguration configuration)
     {
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+
 
         services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
         services.AddScoped<IUserRepository, UserRepository>();

@@ -9,17 +9,20 @@ namespace TechCareer.DataAccess.Contexts;
 public class BaseDbContext : DbContext
 {
     public IConfiguration Configuration { get; set; }
-    
+
     public BaseDbContext(DbContextOptions<BaseDbContext> opt, IConfiguration configuration) : base(opt)
     {
         Configuration = configuration;
-  
+
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
+
+
+    public DbSet<Category> Categories { get; set; }
 
     public DbSet<User> Users { get; set; }
     public DbSet<OperationClaim> OperationClaims { get; set; }

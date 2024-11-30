@@ -16,14 +16,17 @@ public static class BusinessServiceRegistration
 {
     public static IServiceCollection AddServiceDependencies(this IServiceCollection services)
     { 
+
+
+        services.AddScoped<ICategoryService, CategoryService>();
     
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
-        services.AddScoped<IUserService, UserService>();
-        services.AddScoped<IUserWithTokenService, UserWithTokenService>();
+       // services.AddScoped<IUserService, UserService>();
+        //services.AddScoped<IUserWithTokenService, UserWithTokenService>();
         services.AddScoped<LoggerServiceBase, FileLogger>();
-        services.AddScoped<IOperationClaimService, OperationClaimService>();
+      //  services.AddScoped<IOperationClaimService, OperationClaimService>();
         services.AddScoped<IInstructorService, InstructorService>();
         services.AddScoped<IVideoEduService, VideoEduService>();
         
