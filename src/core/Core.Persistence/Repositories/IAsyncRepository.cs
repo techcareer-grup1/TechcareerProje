@@ -7,6 +7,9 @@ namespace Core.Persistence.Repositories;
 public interface IAsyncRepository<TEntity, TEntityId> : IQuery<TEntity>
     where TEntity : Entity<TEntityId>
 {
+
+    IQueryable<TEntity> Where(Expression<Func<TEntity, bool>>? predicate = null);
+
     Task<Paginate<TEntity>> GetPaginateAsync(
         Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,

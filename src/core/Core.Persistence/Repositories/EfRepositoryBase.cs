@@ -20,6 +20,9 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<T
         Context = context;
     }
 
+    public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>>? predicate = null) =>
+           predicate == null ? Context.Set<TEntity>().AsNoTracking() : Context.Set<TEntity>().Where(predicate).AsNoTracking();
+
     public async Task<TEntity> AddAsync(TEntity entity) 
     {
         entity.CreatedDate = DateTime.UtcNow;

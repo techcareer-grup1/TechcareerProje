@@ -15,6 +15,7 @@ public static class DataAccessServiceRegistration
         services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IOperationClaimRepository,OperationClaimRepository>();
+        services.AddScoped<IInstructorRepository, InstructorRepository>();
         services.AddDbContext<BaseDbContext>(opt =>
         {
             opt.UseSqlServer(configuration.GetConnectionString("SqlConnection"));

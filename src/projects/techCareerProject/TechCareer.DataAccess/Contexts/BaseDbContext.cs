@@ -2,6 +2,7 @@
 using Core.Security.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using TechCareer.Models.Entities;
 
 namespace TechCareer.DataAccess.Contexts;
 
@@ -23,4 +24,5 @@ public class BaseDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<OperationClaim> OperationClaims { get; set; }
     public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+    public DbSet<Instructor> Instructors { get; set; }
 }
