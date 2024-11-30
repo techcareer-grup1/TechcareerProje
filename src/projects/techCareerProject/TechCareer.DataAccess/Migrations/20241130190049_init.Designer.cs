@@ -12,8 +12,8 @@ using TechCareer.DataAccess.Contexts;
 namespace TechCareer.DataAccess.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20241130180949_second")]
-    partial class second
+    [Migration("20241130190049_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -128,8 +128,8 @@ namespace TechCareer.DataAccess.Migrations
                             Email = "admin@admin.com",
                             FirstName = "Admin",
                             LastName = "Techcareer",
-                            PasswordHash = new byte[] { 188, 15, 217, 215, 66, 234, 131, 171, 184, 49, 210, 181, 20, 188, 40, 155, 2, 189, 126, 234, 210, 126, 48, 239, 33, 26, 116, 113, 39, 175, 88, 124, 60, 26, 62, 178, 130, 228, 111, 42, 143, 232, 13, 67, 219, 141, 208, 235, 73, 210, 170, 16, 235, 133, 128, 157, 171, 63, 231, 1, 138, 249, 91, 61 },
-                            PasswordSalt = new byte[] { 135, 199, 126, 181, 81, 45, 69, 252, 132, 53, 206, 21, 228, 202, 162, 240, 135, 154, 16, 31, 186, 203, 174, 93, 162, 221, 68, 253, 133, 157, 156, 99, 224, 204, 159, 183, 8, 57, 40, 165, 224, 194, 250, 210, 203, 65, 155, 50, 36, 181, 177, 68, 167, 246, 60, 14, 107, 69, 154, 4, 40, 81, 58, 92, 100, 108, 167, 140, 35, 87, 167, 244, 70, 92, 240, 207, 136, 50, 130, 100, 13, 155, 185, 170, 48, 200, 144, 37, 41, 48, 46, 243, 211, 65, 89, 240, 184, 5, 73, 244, 147, 36, 59, 169, 159, 111, 108, 161, 154, 129, 2, 103, 208, 8, 115, 191, 89, 157, 20, 81, 19, 18, 202, 140, 65, 85, 18, 252 },
+                            PasswordHash = new byte[] { 198, 20, 17, 20, 148, 145, 140, 172, 25, 69, 226, 164, 164, 4, 219, 53, 181, 59, 204, 214, 168, 163, 182, 112, 114, 48, 127, 132, 6, 14, 63, 36, 250, 223, 45, 189, 43, 109, 225, 80, 91, 244, 153, 249, 195, 165, 59, 51, 243, 79, 205, 77, 16, 192, 29, 96, 180, 191, 124, 206, 236, 112, 45, 52 },
+                            PasswordSalt = new byte[] { 94, 24, 47, 102, 16, 44, 229, 181, 149, 202, 57, 209, 69, 115, 41, 216, 177, 253, 147, 105, 254, 49, 184, 183, 63, 20, 197, 140, 252, 77, 125, 234, 225, 93, 22, 95, 62, 35, 217, 248, 217, 75, 107, 186, 230, 105, 61, 106, 245, 199, 168, 104, 88, 63, 27, 227, 224, 183, 162, 227, 200, 162, 2, 83, 235, 219, 165, 89, 23, 1, 49, 101, 52, 72, 243, 41, 225, 223, 211, 212, 104, 27, 50, 104, 52, 101, 85, 131, 199, 192, 135, 168, 2, 173, 172, 167, 202, 215, 114, 98, 17, 15, 105, 64, 208, 25, 251, 24, 25, 237, 25, 101, 68, 211, 234, 135, 138, 18, 25, 236, 194, 100, 169, 5, 145, 69, 50, 42 },
                             Status = true
                         });
                 });
@@ -190,30 +190,51 @@ namespace TechCareer.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreatedDate");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletedDate");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("CategoryName");
 
                     b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("UpdatedDate");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Hackathon"
+                        });
                 });
 
             modelBuilder.Entity("TechCareer.Models.Entities.Event", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id");
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<DateTime>("ApplicationDeadline")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ApplicationDeadline");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int")
+                        .HasColumnName("CategoryId");
+
+                    b.Property<int?>("CategoryId1")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
@@ -222,6 +243,38 @@ namespace TechCareer.DataAccess.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("Description");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("EndDate");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)")
+                        .HasColumnName("ImageUrl");
+
+                    b.Property<string>("ParticipationText")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("ParticipationText");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("StartDate");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)")
+                        .HasColumnName("Title");
+
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
@@ -229,7 +282,24 @@ namespace TechCareer.DataAccess.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Event");
+                    b.HasIndex("CategoryId1");
+
+                    b.ToTable("Events", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("259cf31d-ee2c-4379-978e-a34a53f1f9e4"),
+                            ApplicationDeadline = new DateTime(2024, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CategoryId = 1,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "SeedData Description .... AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                            EndDate = new DateTime(2024, 5, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImageUrl = "",
+                            ParticipationText = "SeedData Text AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                            StartDate = new DateTime(2024, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "SeedData Title"
+                        });
                 });
 
             modelBuilder.Entity("TechCareer.Models.Entities.Instructor", b =>
@@ -340,9 +410,17 @@ namespace TechCareer.DataAccess.Migrations
 
             modelBuilder.Entity("TechCareer.Models.Entities.Event", b =>
                 {
+                    b.HasOne("TechCareer.Models.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TechCareer.Models.Entities.Category", null)
                         .WithMany("Events")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId1");
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.OperationClaim", b =>

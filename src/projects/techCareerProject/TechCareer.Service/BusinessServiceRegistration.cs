@@ -23,10 +23,10 @@ public static class BusinessServiceRegistration
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
-       // services.AddScoped<IUserService, UserService>();
-        //services.AddScoped<IUserWithTokenService, UserWithTokenService>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserWithTokenService, UserWithTokenService>();
         services.AddScoped<LoggerServiceBase, FileLogger>();
-      //  services.AddScoped<IOperationClaimService, OperationClaimService>();
+        services.AddScoped<IOperationClaimService, OperationClaimService>();
         services.AddScoped<IInstructorService, InstructorService>();
         services.AddScoped<IVideoEduService, VideoEduService>();
         
