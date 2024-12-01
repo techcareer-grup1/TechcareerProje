@@ -43,6 +43,13 @@ namespace TechCareer.DataAccess.Configurations
                 .IsRequired();
 
             builder.HasIndex(v => v.Title).IsUnique();
+
+            builder.HasOne(v => v.Instructor)
+               .WithMany(i => i.VideoEducations)
+               .HasForeignKey(v => v.InstructorId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Navigation(v => v.Instructor).AutoInclude();
         }
     }
 }

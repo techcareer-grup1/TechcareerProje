@@ -22,5 +22,12 @@ public class InstructorConfiguration : IEntityTypeConfiguration<Instructor>
 
         //ilişikisel conf
 
+        builder.HasMany(i => i.VideoEducations)
+              .WithOne(v => v.Instructor)
+              .HasForeignKey(v => v.InstructorId)
+              .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(a => a.VideoEducations).AutoInclude();
+
     }
 }

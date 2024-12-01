@@ -20,11 +20,13 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
         builder.Property(e => e.ParticipationText).HasColumnName("ParticipationText").IsRequired().HasMaxLength(2000);
         builder.Property(e => e.CategoryId).HasColumnName("CategoryId").IsRequired();
 
-        // Relationship configuration
+        
         builder.HasOne(e => e.Category)
-               .WithMany()
+               .WithMany(c => c.Events)
                .HasForeignKey(e => e.CategoryId)
-               .OnDelete(DeleteBehavior.Cascade);
+               .OnDelete(DeleteBehavior.NoAction);
+
+        builder.Navigation(e => e.Category).AutoInclude();
 
         // Optional: Seeding example data
         builder.HasData(GetSeeds());

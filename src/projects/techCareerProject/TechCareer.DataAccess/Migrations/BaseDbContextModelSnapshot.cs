@@ -125,8 +125,8 @@ namespace TechCareer.DataAccess.Migrations
                             Email = "admin@admin.com",
                             FirstName = "Admin",
                             LastName = "Techcareer",
-                            PasswordHash = new byte[] { 198, 20, 17, 20, 148, 145, 140, 172, 25, 69, 226, 164, 164, 4, 219, 53, 181, 59, 204, 214, 168, 163, 182, 112, 114, 48, 127, 132, 6, 14, 63, 36, 250, 223, 45, 189, 43, 109, 225, 80, 91, 244, 153, 249, 195, 165, 59, 51, 243, 79, 205, 77, 16, 192, 29, 96, 180, 191, 124, 206, 236, 112, 45, 52 },
-                            PasswordSalt = new byte[] { 94, 24, 47, 102, 16, 44, 229, 181, 149, 202, 57, 209, 69, 115, 41, 216, 177, 253, 147, 105, 254, 49, 184, 183, 63, 20, 197, 140, 252, 77, 125, 234, 225, 93, 22, 95, 62, 35, 217, 248, 217, 75, 107, 186, 230, 105, 61, 106, 245, 199, 168, 104, 88, 63, 27, 227, 224, 183, 162, 227, 200, 162, 2, 83, 235, 219, 165, 89, 23, 1, 49, 101, 52, 72, 243, 41, 225, 223, 211, 212, 104, 27, 50, 104, 52, 101, 85, 131, 199, 192, 135, 168, 2, 173, 172, 167, 202, 215, 114, 98, 17, 15, 105, 64, 208, 25, 251, 24, 25, 237, 25, 101, 68, 211, 234, 135, 138, 18, 25, 236, 194, 100, 169, 5, 145, 69, 50, 42 },
+                            PasswordHash = new byte[] { 39, 115, 204, 15, 168, 90, 51, 255, 175, 21, 78, 120, 157, 101, 72, 50, 177, 44, 65, 64, 117, 208, 186, 220, 155, 149, 188, 178, 138, 59, 107, 144, 143, 171, 213, 236, 27, 236, 182, 104, 147, 22, 163, 224, 112, 44, 74, 78, 210, 242, 68, 242, 147, 245, 172, 139, 139, 110, 92, 113, 66, 193, 237, 174 },
+                            PasswordSalt = new byte[] { 62, 221, 46, 98, 72, 88, 134, 74, 178, 149, 58, 101, 145, 139, 156, 49, 118, 61, 91, 229, 188, 108, 182, 60, 46, 76, 55, 76, 133, 204, 115, 79, 7, 194, 179, 89, 20, 79, 36, 223, 49, 183, 102, 235, 36, 14, 170, 109, 165, 106, 200, 244, 64, 149, 56, 245, 36, 77, 191, 46, 53, 206, 149, 19, 27, 40, 215, 47, 201, 6, 8, 124, 138, 55, 34, 241, 20, 196, 49, 191, 161, 122, 172, 41, 94, 85, 229, 94, 170, 161, 162, 17, 181, 168, 101, 13, 74, 36, 223, 91, 1, 49, 98, 158, 20, 158, 109, 37, 57, 125, 22, 41, 196, 187, 60, 184, 111, 39, 236, 51, 62, 15, 228, 250, 17, 63, 250, 190 },
                             Status = true
                         });
                 });
@@ -231,9 +231,6 @@ namespace TechCareer.DataAccess.Migrations
                         .HasColumnType("int")
                         .HasColumnName("CategoryId");
 
-                    b.Property<int?>("CategoryId1")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -279,14 +276,12 @@ namespace TechCareer.DataAccess.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("CategoryId1");
-
                     b.ToTable("Events", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("259cf31d-ee2c-4379-978e-a34a53f1f9e4"),
+                            Id = new Guid("5dc68451-cce0-4b4b-a95b-544cd7303286"),
                             ApplicationDeadline = new DateTime(2024, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 1,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -380,6 +375,8 @@ namespace TechCareer.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("InstructorId");
+
                     b.HasIndex("Title")
                         .IsUnique();
 
@@ -408,16 +405,23 @@ namespace TechCareer.DataAccess.Migrations
             modelBuilder.Entity("TechCareer.Models.Entities.Event", b =>
                 {
                     b.HasOne("TechCareer.Models.Entities.Category", "Category")
-                        .WithMany()
+                        .WithMany("Events")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("TechCareer.Models.Entities.Category", null)
-                        .WithMany("Events")
-                        .HasForeignKey("CategoryId1");
-
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("TechCareer.Models.Entities.VideoEducation", b =>
+                {
+                    b.HasOne("TechCareer.Models.Entities.Instructor", "Instructor")
+                        .WithMany("VideoEducations")
+                        .HasForeignKey("InstructorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Instructor");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.OperationClaim", b =>
@@ -433,6 +437,11 @@ namespace TechCareer.DataAccess.Migrations
             modelBuilder.Entity("TechCareer.Models.Entities.Category", b =>
                 {
                     b.Navigation("Events");
+                });
+
+            modelBuilder.Entity("TechCareer.Models.Entities.Instructor", b =>
+                {
+                    b.Navigation("VideoEducations");
                 });
 #pragma warning restore 612, 618
         }

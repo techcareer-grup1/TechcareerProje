@@ -81,6 +81,33 @@ namespace TechCareer.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Events",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ApplicationDeadline = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ParticipationText = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Events", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Events_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "VideoEducations",
                 columns: table => new
                 {
@@ -101,40 +128,12 @@ namespace TechCareer.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_VideoEducations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Events",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ApplicationDeadline = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ParticipationText = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    CategoryId1 = table.Column<int>(type: "int", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Events", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Events_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
+                        name: "FK_VideoEducations_Instructors_InstructorId",
+                        column: x => x.InstructorId,
+                        principalTable: "Instructors",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Events_Categories_CategoryId1",
-                        column: x => x.CategoryId1,
-                        principalTable: "Categories",
-                        principalColumn: "Id");
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -179,12 +178,12 @@ namespace TechCareer.DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CreatedDate", "DeletedDate", "Email", "FirstName", "LastName", "PasswordHash", "PasswordSalt", "Status", "UpdatedDate" },
-                values: new object[] { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "admin@admin.com", "Admin", "Techcareer", new byte[] { 198, 20, 17, 20, 148, 145, 140, 172, 25, 69, 226, 164, 164, 4, 219, 53, 181, 59, 204, 214, 168, 163, 182, 112, 114, 48, 127, 132, 6, 14, 63, 36, 250, 223, 45, 189, 43, 109, 225, 80, 91, 244, 153, 249, 195, 165, 59, 51, 243, 79, 205, 77, 16, 192, 29, 96, 180, 191, 124, 206, 236, 112, 45, 52 }, new byte[] { 94, 24, 47, 102, 16, 44, 229, 181, 149, 202, 57, 209, 69, 115, 41, 216, 177, 253, 147, 105, 254, 49, 184, 183, 63, 20, 197, 140, 252, 77, 125, 234, 225, 93, 22, 95, 62, 35, 217, 248, 217, 75, 107, 186, 230, 105, 61, 106, 245, 199, 168, 104, 88, 63, 27, 227, 224, 183, 162, 227, 200, 162, 2, 83, 235, 219, 165, 89, 23, 1, 49, 101, 52, 72, 243, 41, 225, 223, 211, 212, 104, 27, 50, 104, 52, 101, 85, 131, 199, 192, 135, 168, 2, 173, 172, 167, 202, 215, 114, 98, 17, 15, 105, 64, 208, 25, 251, 24, 25, 237, 25, 101, 68, 211, 234, 135, 138, 18, 25, 236, 194, 100, 169, 5, 145, 69, 50, 42 }, true, null });
+                values: new object[] { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "admin@admin.com", "Admin", "Techcareer", new byte[] { 39, 115, 204, 15, 168, 90, 51, 255, 175, 21, 78, 120, 157, 101, 72, 50, 177, 44, 65, 64, 117, 208, 186, 220, 155, 149, 188, 178, 138, 59, 107, 144, 143, 171, 213, 236, 27, 236, 182, 104, 147, 22, 163, 224, 112, 44, 74, 78, 210, 242, 68, 242, 147, 245, 172, 139, 139, 110, 92, 113, 66, 193, 237, 174 }, new byte[] { 62, 221, 46, 98, 72, 88, 134, 74, 178, 149, 58, 101, 145, 139, 156, 49, 118, 61, 91, 229, 188, 108, 182, 60, 46, 76, 55, 76, 133, 204, 115, 79, 7, 194, 179, 89, 20, 79, 36, 223, 49, 183, 102, 235, 36, 14, 170, 109, 165, 106, 200, 244, 64, 149, 56, 245, 36, 77, 191, 46, 53, 206, 149, 19, 27, 40, 215, 47, 201, 6, 8, 124, 138, 55, 34, 241, 20, 196, 49, 191, 161, 122, 172, 41, 94, 85, 229, 94, 170, 161, 162, 17, 181, 168, 101, 13, 74, 36, 223, 91, 1, 49, 98, 158, 20, 158, 109, 37, 57, 125, 22, 41, 196, 187, 60, 184, 111, 39, 236, 51, 62, 15, 228, 250, 17, 63, 250, 190 }, true, null });
 
             migrationBuilder.InsertData(
                 table: "Events",
-                columns: new[] { "Id", "ApplicationDeadline", "CategoryId", "CategoryId1", "CreatedDate", "DeletedDate", "Description", "EndDate", "ImageUrl", "ParticipationText", "StartDate", "Title", "UpdatedDate" },
-                values: new object[] { new Guid("259cf31d-ee2c-4379-978e-a34a53f1f9e4"), new DateTime(2024, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "SeedData Description .... AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", new DateTime(2024, 5, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "SeedData Text AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", new DateTime(2024, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "SeedData Title", null });
+                columns: new[] { "Id", "ApplicationDeadline", "CategoryId", "CreatedDate", "DeletedDate", "Description", "EndDate", "ImageUrl", "ParticipationText", "StartDate", "Title", "UpdatedDate" },
+                values: new object[] { new Guid("5dc68451-cce0-4b4b-a95b-544cd7303286"), new DateTime(2024, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "SeedData Description .... AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", new DateTime(2024, 5, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "SeedData Text AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", new DateTime(2024, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "SeedData Title", null });
 
             migrationBuilder.InsertData(
                 table: "UserOperationClaims",
@@ -197,11 +196,6 @@ namespace TechCareer.DataAccess.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Events_CategoryId1",
-                table: "Events",
-                column: "CategoryId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserOperationClaims_OperationClaimId",
                 table: "UserOperationClaims",
                 column: "OperationClaimId");
@@ -210,6 +204,11 @@ namespace TechCareer.DataAccess.Migrations
                 name: "IX_UserOperationClaims_UserId",
                 table: "UserOperationClaims",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VideoEducations_InstructorId",
+                table: "VideoEducations",
+                column: "InstructorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_VideoEducations_Title",
@@ -225,9 +224,6 @@ namespace TechCareer.DataAccess.Migrations
                 name: "Events");
 
             migrationBuilder.DropTable(
-                name: "Instructors");
-
-            migrationBuilder.DropTable(
                 name: "UserOperationClaims");
 
             migrationBuilder.DropTable(
@@ -241,6 +237,9 @@ namespace TechCareer.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Instructors");
         }
     }
 }

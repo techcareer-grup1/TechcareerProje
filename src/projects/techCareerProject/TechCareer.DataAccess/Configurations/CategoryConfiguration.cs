@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TechCareer.Models.Entities;
 
 namespace TechCareer.DataAccess.Configurations
@@ -19,7 +14,9 @@ namespace TechCareer.DataAccess.Configurations
             builder.Property(u => u.UpdatedDate).HasColumnName("UpdatedDate");
             builder.Property(u => u.DeletedDate).HasColumnName("DeletedDate");
 
-            builder.HasMany(o => o.Events).WithOne(x=> x.Category).HasForeignKey(x=>x.CategoryId).OnDelete(DeleteBehavior.Cascade); ;
+            builder.HasMany(o => o.Events).WithOne(x=> x.Category).HasForeignKey(x=>x.CategoryId).OnDelete(DeleteBehavior.Cascade);
+
+            builder.Navigation(c => c.Events).AutoInclude();
 
             builder.HasData(new Category { Id = 1, Name = "Hackathon" });
 
