@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\core\Core.AOP\Core.AOP.csproj" />
     <ProjectReference Include="..\..\..\core\Core.CrossCuttingConcerns\Core.CrossCuttingConcerns.csproj" />
+    <ProjectReference Include="..\..\..\core\Core.Persistence\Core.Persistence.csproj" />
     <ProjectReference Include="..\..\..\core\Core.Security\Core.Security.csproj" />
     <ProjectReference Include="..\TechCareer.DataAccess\TechCareer.DataAccess.csproj" />
     <ProjectReference Include="..\TechCareer.Models\TechCareer.Models.csproj" />
