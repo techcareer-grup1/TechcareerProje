@@ -58,6 +58,26 @@ public class InstructorService(IInstructorRepository instructorRepository,Instru
         return ReturnModel<InstructorResponse>.Success(instructorAsDto,InstructorMessages.GetInstructorByIdMessage);
     }
 
+    public async Task<ReturnModel<InstructorWithVideosResponse>> GetInstructorWithVideosAsync(Guid instructorId)
+    {
+        Instructor? instructor = await instructorRepository.GetInstructorWithVideosAsync(instructorId);
+        instructorBusinessRules.IsInstructorExists(instructor);
+
+        InstructorWithVideosResponse instructorAsDto = mapper.Map<InstructorWithVideosResponse>(instructor);
+
+        return ReturnModel<InstructorWithVideosResponse>.Success(instructorAsDto,InstructorMessages.InstructorWithVideosMessage);
+    }
+
+    public async Task<ReturnModel<List<InstructorWithVideosResponse>>> GetInstructorWithVideosAsync()
+    {
+        List<Instructor> instructor = await instructorRepository.GetInstructorWithVideos().ToListAsync();
+
+        List<InstructorWithVideosResponse> instructorAsDto =  mapper.Map<List<InstructorWithVideosResponse>>(instructor);
+
+        return ReturnModel<List<InstructorWithVideosResponse>>.Success(instructorAsDto, InstructorMessages.InstructorWithVideosMessage);
+
+    }
+
     public async Task<ReturnModel<UpdateInstructorResponse>> UpdateAsync(UpdateInstructorRequest request)
     {
         Instructor instructor = await instructorRepository.GetAsync(x=> x.Id == request.Id);

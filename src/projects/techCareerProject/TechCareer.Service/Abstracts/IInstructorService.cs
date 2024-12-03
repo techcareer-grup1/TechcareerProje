@@ -13,4 +13,7 @@ public interface IInstructorService
     Task<ReturnModel<CreateInstructorResponse>> CreateAsync(CreateInstructorRequest request);
     Task<ReturnModel<UpdateInstructorResponse>> UpdateAsync(UpdateInstructorRequest request);
     Task<ReturnModel> DeleteAsync(Guid id);
+    Task<ReturnModel<InstructorWithVideosResponse>> GetInstructorWithVideosAsync(Guid instructorId);
+    Task<ReturnModel<List<InstructorWithVideosResponse>>> GetInstructorWithVideosAsync();
+
 }

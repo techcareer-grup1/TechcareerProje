@@ -12,6 +12,7 @@ public class InstructorMapper : Profile
     public InstructorMapper()
     {
         CreateMap<Instructor, InstructorResponse>().ReverseMap();
+        CreateMap<Instructor, InstructorWithVideosResponse>().ReverseMap();
         CreateMap<CreateInstructorRequest, Instructor>().ForMember(des => des.Name,
             opt => opt.MapFrom(src => src.Name)).ForMember(des => des.About,
             opt => opt.MapFrom(src => src.About));

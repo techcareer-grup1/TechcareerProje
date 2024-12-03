@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TechCareer.Models.Dtos.Instructors.Request;
 using TechCareer.Service.Abstracts;
+using TechCareer.Service.Concretes;
 
 namespace TechCareer.API.Controllers;
 
@@ -24,4 +25,13 @@ public class InstructorsController(IInstructorService instructorService) : Contr
 
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteInstructor([FromRoute] Guid id) => Ok(await instructorService.DeleteAsync(id));
+
+    [HttpGet("{id}/videos")]
+    public async Task<IActionResult> GetInstructorWithVideos(Guid id) => Ok(await instructorService.GetInstructorWithVideosAsync(id));
+
+    [HttpGet("videos")]
+    public async Task<IActionResult> GetInstructorWithVideos() => Ok(await instructorService.GetInstructorWithVideosAsync());
+
+
+
 }
