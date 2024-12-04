@@ -21,13 +21,11 @@ public class RabbitMQPublisher
         var channel = _rabbitMQClientService.Connect();
 
         var bodyString = JsonSerializer.Serialize(videoEducationImageCreatedEvent);
-
         var bodyByte = Encoding.UTF8.GetBytes(bodyString);
 
         var properties = channel.CreateBasicProperties();
         properties.Persistent = true;
 
         channel.BasicPublish(exchange: RabbitMQClientService.ExchangeName, routingKey: RabbitMQClientService.RoutingWatermark, basicProperties: properties, body: bodyByte);
-
     }
 }

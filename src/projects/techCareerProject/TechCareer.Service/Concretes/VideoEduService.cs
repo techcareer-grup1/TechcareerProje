@@ -7,12 +7,14 @@ using TechCareer.Models.Dtos.VideoEducations.Response;
 using TechCareer.Models.Entities;
 using TechCareer.Service.Abstracts;
 using TechCareer.Service.Constants;
+using TechCareer.Service.EventsRabbitMQ;
+using TechCareer.Service.RabbitMQ;
 using TechCareer.Service.Rules;
 
 namespace TechCareer.Service.Concretes;
 
 public sealed class VideoEduService(IVideoEduRepository videoEduRepository, VideoEduBusinessRules videoEduBusinessRules,
-IMapper mapper) : IVideoEduService
+IMapper mapper,RabbitMQPublisher rabbitMQPublisher) : IVideoEduService
 {
     public async Task<ReturnModel<List<VideoEduResponseDto>>> GetAllAsync()
     {
@@ -39,6 +41,15 @@ IMapper mapper) : IVideoEduService
         
         VideoEducation videoEducation = mapper.Map<VideoEducation>(request);
         await videoEduRepository.AddAsync(videoEducation);
+
+        var videoEducationImageCreatedEvent = new VideoEducationImageCreatedEvent
+        {
+            ImageUrl = videoEducation.ImageUrl 
+        };
+
+        rabbitMQPublisher.Publish(videoEducationImageCreatedEvent);
+
+
         CreateVideoEduResponseDto videoEduResponseDto = mapper.Map<CreateVideoEduResponseDto>(videoEducation);
         return ReturnModel<CreateVideoEduResponseDto>.Success(videoEduResponseDto,VideoEduMassages.VideoEduAdded,HttpStatusCode.Created);
     }
