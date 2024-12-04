@@ -10,6 +10,8 @@ using Core.CrossCuttingConcerns.Exceptions.Extensions;
 using TechCareer.DataAccess;
 using TechCareer.Service;
 using TechCareer.Service.DependencyResolvers.Autofac;
+using RabbitMQ.Client;
+using TechCareer.Service.RabbitMQ;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,9 @@ builder.Services.AddSecurityServices();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddStackExchangeRedisCache(opt=>opt.Configuration="localhost:6379");
 ServiceTool.Create(builder.Services);
+
+builder.Services.AddSingleton(sp => new ConnectionFactory() { Uri = new Uri(builder.Configuration.GetConnectionString("RabbitMQ"))});
+builder.Services.AddSingleton<RabbitMQClientService>();
 
 const string tokenOptionsConfigurationSection = "TokenOptions";
 TokenOptions tokenOptions =

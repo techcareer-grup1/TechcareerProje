@@ -11,4 +11,5 @@ public static class InstructorMessages
     public const string InstructorUpdatedMessage = "Eğitmen güncellendi";
     public const string InstructorNameAlreadyExistsMessage = "Bu isimle bir eğitmen zaten mevcut";
     public const string InstructorNotFoundMessage = "Eğitmen bulunamadı";
+    public const string InstructorWithVideosMessage = "Eğitmenin videoları listelendi";
 }

@@ -7,6 +7,7 @@ public abstract class ExceptionHandler
         BusinessException businessException => HandleException(businessException),
         ValidationException validationException => HandleException(validationException),
         AuthorizationException authorizationException => HandleException(authorizationException),
+        NotFoundException notFoundException => HandleException(notFoundException),
         _ => HandleException(exception)
     };
     protected abstract Task HandleException(AuthorizationException authorizationException);
@@ -14,6 +15,8 @@ public abstract class ExceptionHandler
     protected abstract Task HandleException(ValidationException validationException);
 
     protected abstract Task HandleException(BusinessException businessException);
+
+    protected abstract Task HandleException(NotFoundException notFoundException);
 
     protected abstract Task HandleException(Exception exception);
 }
