@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace TechCareer.Service.EventsRabbitMQ
+namespace TechCareer.Service.EventsRabbitMQ;
+
+public class VideoEducationImageCreatedEvent
 {
-    internal class VideoEducationImageCreatedEvent
-    {
-    }
+    public string ImageUrl { get; set; }
 }
