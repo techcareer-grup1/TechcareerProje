@@ -12,6 +12,7 @@ using TechCareer.Service;
 using TechCareer.Service.DependencyResolvers.Autofac;
 using RabbitMQ.Client;
 using TechCareer.Service.RabbitMQ;
+using TechCareer.API.BackgroundServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,8 @@ ServiceTool.Create(builder.Services);
 
 builder.Services.AddSingleton(sp => new ConnectionFactory() { Uri = new Uri(builder.Configuration.GetConnectionString("RabbitMQ"))});
 builder.Services.AddSingleton<RabbitMQClientService>();
+builder.Services.AddSingleton<RabbitMQPublisher>();
+builder.Services.AddHostedService<WatermarkConsumerBackgroundService>();
 
 const string tokenOptionsConfigurationSection = "TokenOptions";
 TokenOptions tokenOptions =
