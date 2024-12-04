@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Core.A0P.Aspects;
 using Core.CrossCuttingConcerns.Exceptions.ExceptionTypes;
 using Core.Persistence.Extensions;
 using System;
@@ -11,6 +12,8 @@ using TechCareer.Models.Dtos.Categories.Requests;
 using TechCareer.Models.Dtos.Categories.Responses;
 using TechCareer.Models.Entities;
 using TechCareer.Service.Abstracts;
+using TechCareer.Service.Validations.Categories;
+using TechCareer.Service.Validations.Events;
 
 namespace TechCareer.Service.Concretes
 {
@@ -25,7 +28,11 @@ namespace TechCareer.Service.Concretes
             _mapper = mapper;
         }
 
-
+        [ValidationAspect(typeof(CategoryAddRequestValidator))]
+        [LoggerAspect]
+        [ClearCacheAspect(cacheGroupKey: "GetCategories")]
+        [ClearCacheAspect(cacheGroupKey: "Categories")]
+        [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
         public async Task AddAsync(CategoryAddRequestDto dto)
         {
 
@@ -34,7 +41,10 @@ namespace TechCareer.Service.Concretes
             await _categoryRepository.AddAsync(category);
 
         }
-
+        [ClearCacheAspect(cacheGroupKey: "GetCategories")]
+        [ClearCacheAspect(cacheGroupKey: "Categories")]
+        [LoggerAspect]
+        [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
         public async Task DeleteAsync(int id)
         {
             var category = await _categoryRepository.GetAsync(x=> x.Id == id);
@@ -47,6 +57,7 @@ namespace TechCareer.Service.Concretes
             await _categoryRepository.DeleteAsync(category,true);
         }
 
+        [CacheAspect(cacheKeyTemplate: "GetCategoriesList", bypassCache: false, cacheGroupKey: "GetCategories")]
         public async Task<List<CategoryResponseDto>> GetAllAsync()
         {
             List<Category> categories = await _categoryRepository.GetListAsync(enableTracking:false);
@@ -57,6 +68,7 @@ namespace TechCareer.Service.Concretes
 
         }
 
+        [CacheAspect(cacheKeyTemplate:"GetCategories({index},{size})"),bypassCache:false,cacheGroupKey:"Categories"]
         public async Task<Paginate<CategoryResponseDto>> GetAllPaginateAsync(int index, int size)
         {
             Paginate<Category> categories = await _categoryRepository.GetPaginateAsync(index: index, size: size,
@@ -67,6 +79,11 @@ namespace TechCareer.Service.Concretes
             return responses;
         }
 
+        [ClearCacheAspect(cacheGroupKey: "GetCategories")]
+        [ClearCacheAspect(cacheGroupKey: "Categories")]
+        [LoggerAspect]
+        [ValidationAspect(typeof(CategoryUpdateRequestValidator))]
+        [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
         public async Task UpdateAsync(CategoryUpdateRequestDto dto)
         {
             var category = _mapper.Map<Category>(dto);

@@ -8,12 +8,15 @@ using TechCareer.Models.Entities;
 using TechCareer.Service.Abstracts;
 using TechCareer.Service.Constants;
 using TechCareer.Service.Rules;
+using TechCareer.Service.Validations.Instructors;
+using TechCareer.Service.Validations.VideoEducations;
 
 namespace TechCareer.Service.Concretes;
 
 public sealed class VideoEduService(IVideoEduRepository videoEduRepository, VideoEduBusinessRules videoEduBusinessRules,
 IMapper mapper) : IVideoEduService
 {
+    [CacheAspect(cacheKeyTemplate: "GetVideoEducationList", bypassCache: false, cacheGroupKey: "GetVideoEducation")]
     public async Task<ReturnModel<List<VideoEduResponseDto>>> GetAllAsync()
     {
         List<VideoEducation> videoEducations = await videoEduRepository.GetListAsync();
@@ -33,6 +36,10 @@ IMapper mapper) : IVideoEduService
         return ReturnModel<VideoEduResponseDto>.Success(videoEduResponseDto,VideoEduMassages.VideoEduListedById);
     }
 
+    [ValidationAspect(typeof(CreateVideoEduRequestValidator))]
+    [LoggerAspect]
+    [ClearCacheAspect(cacheGroupKey: "GetVideoEducation")]
+    [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
     public async Task<ReturnModel<CreateVideoEduResponseDto>> CreateAsync(CreateVideoEduRequestDto request)
     {
         await videoEduBusinessRules.IsVideoTitleExist(request.Title);
@@ -43,6 +50,10 @@ IMapper mapper) : IVideoEduService
         return ReturnModel<CreateVideoEduResponseDto>.Success(videoEduResponseDto,VideoEduMassages.VideoEduAdded,HttpStatusCode.Created);
     }
 
+    [ClearCacheAspect(cacheGroupKey: "GetVideoEducation")]
+    [LoggerAspect]
+    [ValidationAspect(typeof(UpdateVideoEduRequestValidator))]
+    [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
     public  async Task<ReturnModel<UpdateVideoEduResponseDto>> UpdateAsync(UpdateVideoEduRequestDto request)
     {
         await videoEduBusinessRules.IsVideoEduExist(request.Id);
@@ -56,6 +67,9 @@ IMapper mapper) : IVideoEduService
         
     }
 
+    [ClearCacheAspect(cacheGroupKey: "GetVideoEducation")]
+    [LoggerAspect]
+    [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
     public async Task<ReturnModel> DeleteAsync(int id)
     {
         VideoEducation? videoEducation = await videoEduRepository.GetAsync(x => x.Id == id);

@@ -1,6 +1,8 @@
 ﻿
 using AutoMapper;
+using Core.AOP.Aspects;
 using Core.CrossCuttingConcerns.Responses;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using TechCareer.DataAccess.Repositories.Abstracts;
@@ -10,11 +12,16 @@ using TechCareer.Models.Entities;
 using TechCareer.Service.Abstracts;
 using TechCareer.Service.Constants;
 using TechCareer.Service.Rules;
+using TechCareer.Service.Validations.Instructors;
 
 namespace TechCareer.Service.Concretes;
 
 public class InstructorService(IInstructorRepository instructorRepository,InstructorBusinessRules instructorBusinessRules,IMapper mapper) : IInstructorService
 {
+    [ValidationAspect(typeof(CreateInstructorRequestValidator))]
+    [LoggerAspect]
+    [ClearCacheAspect(cacheGroupKey:"GetInstructors")]
+    [AuthorizeAspect(RolesAuthorizationRequirement:"Admin")]
     public async Task<ReturnModel<CreateInstructorResponse>> CreateAsync(CreateInstructorRequest request)
     {
         bool anyInstructor = await instructorRepository.Where(x => x.Name == request.Name).AnyAsync();
@@ -28,6 +35,9 @@ public class InstructorService(IInstructorRepository instructorRepository,Instru
 
     }
 
+    [ClearCacheAspect(cacheGroupKey: "GetInstructors")]
+    [LoggerAspect]
+    [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
     public async Task<ReturnModel> DeleteAsync(Guid id)
     {
         Instructor? instructor = await instructorRepository.GetAsync(x=> x.Id == id);
@@ -38,6 +48,7 @@ public class InstructorService(IInstructorRepository instructorRepository,Instru
         return ReturnModel.Success(InstructorMessages.InstructorDeletedMessage,HttpStatusCode.NoContent);
     }
 
+    [CacheAspect(cacheKeyTemplate:"GetInstructorsList",bypassCache:false,cacheGroupKey:"GetInstructors")]
     public async Task<ReturnModel<List<InstructorResponse>>> GetAllAsync()
     {
         List<Instructor> instructors = await instructorRepository.GetListAsync();
@@ -58,6 +69,10 @@ public class InstructorService(IInstructorRepository instructorRepository,Instru
         return ReturnModel<InstructorResponse>.Success(instructorAsDto,InstructorMessages.GetInstructorByIdMessage);
     }
 
+    [ClearCacheAspect(cacheGroupKey: "GetInstructors")]
+    [LoggerAspect]
+    [ValidationAspect(typeof(UpdateInstructorRequestValidator))]
+    [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
     public async Task<ReturnModel<UpdateInstructorResponse>> UpdateAsync(UpdateInstructorRequest request)
     {
         Instructor instructor = await instructorRepository.GetAsync(x=> x.Id == request.Id);
