@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Core.AOP.Aspects;
 using Core.CrossCuttingConcerns.Responses;
 using Core.Security.Repositories.Abstracts;
 using Microsoft.EntityFrameworkCore;

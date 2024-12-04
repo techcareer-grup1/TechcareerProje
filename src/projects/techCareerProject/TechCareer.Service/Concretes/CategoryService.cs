@@ -1,12 +1,7 @@
 ﻿using AutoMapper;
-using Core.A0P.Aspects;
+using Core.AOP.Aspects;
 using Core.CrossCuttingConcerns.Exceptions.ExceptionTypes;
 using Core.Persistence.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TechCareer.DataAccess.Repositories.Abstracts;
 using TechCareer.Models.Dtos.Categories.Requests;
 using TechCareer.Models.Dtos.Categories.Responses;
@@ -68,7 +63,7 @@ namespace TechCareer.Service.Concretes
 
         }
 
-        [CacheAspect(cacheKeyTemplate:"GetCategories({index},{size})"),bypassCache:false,cacheGroupKey:"Categories"]
+        [CacheAspect(cacheKeyTemplate: "CategoryList", bypassCache: false, cacheGroupKey: "Categories")]
         public async Task<Paginate<CategoryResponseDto>> GetAllPaginateAsync(int index, int size)
         {
             Paginate<Category> categories = await _categoryRepository.GetPaginateAsync(index: index, size: size,

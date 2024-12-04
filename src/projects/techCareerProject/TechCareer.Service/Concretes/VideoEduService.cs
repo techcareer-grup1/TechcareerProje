@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using AutoMapper;
+using Core.AOP.Aspects;
 using Core.CrossCuttingConcerns.Responses;
 using TechCareer.DataAccess.Repositories.Abstracts;
 using TechCareer.Models.Dtos.VideoEducations.Request;

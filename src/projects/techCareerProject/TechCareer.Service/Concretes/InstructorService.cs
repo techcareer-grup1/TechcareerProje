@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using Core.AOP.Aspects;
 using Core.CrossCuttingConcerns.Responses;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
