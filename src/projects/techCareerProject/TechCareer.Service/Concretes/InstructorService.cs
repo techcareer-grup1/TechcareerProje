@@ -58,6 +58,15 @@ public class InstructorService(IInstructorRepository instructorRepository,Instru
         return ReturnModel<List<InstructorResponse>>.Success(instructorsAsDto,InstructorMessages.InstructorsListedMessage);
        
     }
+    public async Task<ReturnModel<InstructorResponse>> GetByIdAsync(Guid id)
+    {
+        Instructor? instructor = await instructorRepository.GetAsync(x=> x.Id == id);
+        instructorBusinessRules.IsInstructorExists(instructor);
+
+        InstructorResponse instructorAsDto = mapper.Map<InstructorResponse>(instructor);
+
+        return ReturnModel<InstructorResponse>.Success(instructorAsDto,InstructorMessages.GetInstructorByIdMessage);
+    }
 
 
     public async Task<ReturnModel<InstructorWithVideosResponse>> GetInstructorWithVideosAsync(Guid instructorId)
@@ -78,16 +87,6 @@ public class InstructorService(IInstructorRepository instructorRepository,Instru
 
         return ReturnModel<List<InstructorWithVideosResponse>>.Success(instructorAsDto, InstructorMessages.InstructorWithVideosMessage);
 
-    }
-
-    public async Task<ReturnModel<InstructorResponse>> GetByIdAsync(Guid id)
-    {
-        Instructor? instructor = await instructorRepository.GetAsync(x=> x.Id == id);
-        instructorBusinessRules.IsInstructorExists(instructor);
-
-        InstructorResponse instructorAsDto = mapper.Map<InstructorResponse>(instructor);
-
-        return ReturnModel<InstructorResponse>.Success(instructorAsDto,InstructorMessages.GetInstructorByIdMessage);
     }
 
     [ClearCacheAspect(cacheGroupKey: "GetInstructors")]
