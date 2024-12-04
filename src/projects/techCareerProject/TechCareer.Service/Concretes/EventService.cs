@@ -8,6 +8,8 @@ using TechCareer.Models.Dtos.Events.Request;
 using TechCareer.Models.Dtos.Events.Response;
 using TechCareer.Models.Entities;
 using TechCareer.Service.Abstracts;
+using TechCareer.Service.Validations.Events;
+using TechCareer.Service.Validations.Instructors;
 
 namespace TechCareer.Service.Concretes
 {
@@ -22,6 +24,11 @@ namespace TechCareer.Service.Concretes
             _mapper = mapper;
         }
 
+
+        [ValidationAspect(typeof(CreateEventRequestValidator))]
+        [LoggerAspect]
+        [ClearCacheAspect(cacheGroupKey: "GetEvents")]
+        [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
         public async Task<ReturnModel<CreateEventResponse>> CreateAsync(CreateEventRequest request)
         {
             // Check if event with same title already exists
@@ -38,6 +45,9 @@ namespace TechCareer.Service.Concretes
             return ReturnModel<CreateEventResponse>.Success(eventAsDto, "Event created successfully.", HttpStatusCode.Created);
         }
 
+        [ClearCacheAspect(cacheGroupKey: "GetEvents")]
+        [LoggerAspect]
+        [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
         public async Task<ReturnModel> DeleteAsync(Guid id)
         {
             Event? eventEntity = await _eventRepository.GetAsync(x => x.Id == id);
@@ -50,6 +60,7 @@ namespace TechCareer.Service.Concretes
             return ReturnModel.Success("Event deleted successfully.", HttpStatusCode.NoContent);
         }
 
+        [CacheAspect(cacheKeyTemplate: "GetEventsList", bypassCache: false, cacheGroupKey: "GetEvents")]
         public async Task<ReturnModel<List<EventResponse>>> GetAllAsync()
         {
             List<Event> events = await _eventRepository.GetListAsync();
@@ -70,6 +81,10 @@ namespace TechCareer.Service.Concretes
             return ReturnModel<EventResponse>.Success(eventAsDto, "Event retrieved successfully.");
         }
 
+        [ClearCacheAspect(cacheGroupKey: "GetEvents")]
+        [LoggerAspect]
+        [ValidationAspect(typeof(UpdateEventRequestValidator))]
+        [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
         public async Task<ReturnModel<UpdateEventResponse>> UpdateAsync(UpdateEventRequest request)
         {
             Event eventEntity = await _eventRepository.GetAsync(x => x.Id == request.Id);
