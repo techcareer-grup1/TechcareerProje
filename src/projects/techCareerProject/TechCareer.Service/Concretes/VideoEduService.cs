@@ -41,7 +41,7 @@ IMapper mapper,RabbitMQPublisher rabbitMQPublisher) : IVideoEduService
     [ValidationAspect(typeof(CreateVideoEduRequestValidator))]
     [LoggerAspect]
     [ClearCacheAspect(cacheGroupKey: "GetVideoEducation")]
-    [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
+    [AuthorizeAspect(roles:"Admin")]
     public async Task<ReturnModel<CreateVideoEduResponseDto>> CreateAsync(CreateVideoEduRequestDto request)
     {
         await videoEduBusinessRules.IsVideoTitleExist(request.Title);
@@ -64,7 +64,7 @@ IMapper mapper,RabbitMQPublisher rabbitMQPublisher) : IVideoEduService
     [ClearCacheAspect(cacheGroupKey: "GetVideoEducation")]
     [LoggerAspect]
     [ValidationAspect(typeof(UpdateVideoEduRequestValidator))]
-    [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
+    [AuthorizeAspect(roles:"Admin")]
     public  async Task<ReturnModel<UpdateVideoEduResponseDto>> UpdateAsync(UpdateVideoEduRequestDto request)
     {
         await videoEduBusinessRules.IsVideoEduExist(request.Id);
@@ -80,7 +80,7 @@ IMapper mapper,RabbitMQPublisher rabbitMQPublisher) : IVideoEduService
 
     [ClearCacheAspect(cacheGroupKey: "GetVideoEducation")]
     [LoggerAspect]
-    [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
+    [AuthorizeAspect(roles:"Admin")]
     public async Task<ReturnModel> DeleteAsync(int id)
     {
         VideoEducation? videoEducation = await videoEduRepository.GetAsync(x => x.Id == id);

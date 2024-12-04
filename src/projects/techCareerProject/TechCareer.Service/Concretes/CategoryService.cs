@@ -32,7 +32,7 @@ namespace TechCareer.Service.Concretes
         [LoggerAspect]
         [ClearCacheAspect(cacheGroupKey: "GetCategories")]
         [ClearCacheAspect(cacheGroupKey: "Categories")]
-        [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
+        [AuthorizeAspect(roles:"Admin")]
         public async Task AddAsync(CategoryAddRequestDto dto)
         {
 
@@ -44,7 +44,7 @@ namespace TechCareer.Service.Concretes
         [ClearCacheAspect(cacheGroupKey: "GetCategories")]
         [ClearCacheAspect(cacheGroupKey: "Categories")]
         [LoggerAspect]
-        [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
+        [AuthorizeAspect(roles:"Admin")]
         public async Task DeleteAsync(int id)
         {
             var category = await _categoryRepository.GetAsync(x=> x.Id == id);
@@ -83,7 +83,7 @@ namespace TechCareer.Service.Concretes
         [ClearCacheAspect(cacheGroupKey: "Categories")]
         [LoggerAspect]
         [ValidationAspect(typeof(CategoryUpdateRequestValidator))]
-        [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
+        [AuthorizeAspect(roles:"Admin")]
         public async Task UpdateAsync(CategoryUpdateRequestDto dto)
         {
             var category = _mapper.Map<Category>(dto);

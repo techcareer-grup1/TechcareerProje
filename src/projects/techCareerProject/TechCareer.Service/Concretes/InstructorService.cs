@@ -19,7 +19,7 @@ public class InstructorService(IInstructorRepository instructorRepository,Instru
     [ValidationAspect(typeof(CreateInstructorRequestValidator))]
     [LoggerAspect]
     [ClearCacheAspect(cacheGroupKey: "GetInstructors")]
-    [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
+    [AuthorizeAspect(roles:"Admin")]
     public async Task<ReturnModel<CreateInstructorResponse>> CreateAsync(CreateInstructorRequest request)
     {
         bool anyInstructor = await instructorRepository.Where(x => x.Name == request.Name).AnyAsync();
@@ -35,7 +35,7 @@ public class InstructorService(IInstructorRepository instructorRepository,Instru
 
     [ClearCacheAspect(cacheGroupKey: "GetInstructors")]
     [LoggerAspect]
-    [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
+    [AuthorizeAspect(roles:"Admin")]
     public async Task<ReturnModel> DeleteAsync(Guid id)
     {
         Instructor? instructor = await instructorRepository.GetAsync(x=> x.Id == id);
@@ -90,7 +90,7 @@ public class InstructorService(IInstructorRepository instructorRepository,Instru
     [ClearCacheAspect(cacheGroupKey: "GetInstructors")]
     [LoggerAspect]
     [ValidationAspect(typeof(UpdateInstructorRequestValidator))]
-    [AuthorizeAspect(RolesAuthorizationRequirement: "Admin")]
+    [AuthorizeAspect(roles:"Admin")]
     public async Task<ReturnModel<UpdateInstructorResponse>> UpdateAsync(UpdateInstructorRequest request)
     {
         Instructor instructor = await instructorRepository.GetAsync(x=> x.Id == request.Id);
