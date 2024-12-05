@@ -2,6 +2,7 @@
 using TechCareer.Models.Dtos.Users.Request;
 using TechCareer.Service.Abstracts;
 using Core.Security.Entities;
+using Core.Security.Hashing;
 
 namespace TechCareer.API.Controllers;
 
@@ -24,17 +25,19 @@ public class UsersController(IUserService userService) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
     {
-        var newUser = new User
+        HashingHelper.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+
+        User user = new User
         {
             FirstName = request.FirstName,
             LastName = request.LastName,
             Email = request.Email,
-            PasswordHash = request.PasswordHash,
-            PasswordSalt = request.PasswordSalt,
+            PasswordHash = passwordHash, 
+            PasswordSalt = passwordSalt, 
             Status = request.Status
         };
 
-        var createdUser = await userService.AddAsync(newUser);
+        var createdUser = await userService.AddAsync(user);
         return Ok(createdUser);
     }
 

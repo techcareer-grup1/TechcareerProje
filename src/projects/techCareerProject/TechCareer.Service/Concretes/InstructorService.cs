@@ -17,10 +17,10 @@ namespace TechCareer.Service.Concretes;
 
 public class InstructorService(IInstructorRepository instructorRepository,InstructorBusinessRules instructorBusinessRules,IMapper mapper) : IInstructorService
 {
-    [ValidationAspect(typeof(CreateInstructorRequestValidator))]
-    [LoggerAspect]
-    [ClearCacheAspect(cacheGroupKey: "GetInstructors")]
-    [AuthorizeAspect(roles:"Admin")]
+    //[ValidationAspect(typeof(CreateInstructorRequestValidator))]
+    //[LoggerAspect]
+    //[ClearCacheAspect(cacheGroupKey: "GetInstructors")]
+    //[AuthorizeAspect(roles:"Admin")]
     public async Task<ReturnModel<CreateInstructorResponse>> CreateAsync(CreateInstructorRequest request)
     {
         bool anyInstructor = await instructorRepository.Where(x => x.Name == request.Name).AnyAsync();
@@ -47,7 +47,7 @@ public class InstructorService(IInstructorRepository instructorRepository,Instru
         return ReturnModel.Success(InstructorMessages.InstructorDeletedMessage,HttpStatusCode.NoContent);
     }
 
-    [CacheAspect(cacheKeyTemplate: "GetInstructorsList", bypassCache: false, cacheGroupKey: "GetInstructors")]
+    //[CacheAspect(cacheKeyTemplate: "GetInstructorsList", bypassCache: false, cacheGroupKey: "GetInstructors")]
     public async Task<ReturnModel<List<InstructorResponse>>> GetAllAsync()
     {
         List<Instructor> instructors = await instructorRepository.GetListAsync();

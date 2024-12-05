@@ -30,7 +30,8 @@ public class OperationClaimConfiguration : IEntityTypeConfiguration<OperationCla
         HashSet<OperationClaim> seeds =
             new()
             {
-                new OperationClaim { Id = ++id, Name = GeneralOperationClaims.Admin }
+                new OperationClaim { Id = ++id, Name = GeneralOperationClaims.Admin },
+                new OperationClaim { Id = ++id, Name = GeneralOperationClaims.User }
             };
 
         return seeds;

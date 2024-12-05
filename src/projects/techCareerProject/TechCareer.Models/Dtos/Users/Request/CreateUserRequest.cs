@@ -1,12 +1,15 @@
 ﻿namespace TechCareer.Models.Dtos.Users.Request;
 
-public sealed record CreateUserRequest(
-    string FirstName,
-    string LastName,
-    string Email,
-    byte[] PasswordSalt,
-    byte[] PasswordHash,
-    bool Status
-);
+public sealed class CreateUserRequest
+{
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; } 
+    public bool Status { get; set; }
+}
+    
+
+
 
 
