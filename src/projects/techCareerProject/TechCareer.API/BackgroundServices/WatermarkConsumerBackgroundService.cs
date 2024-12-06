@@ -62,18 +62,45 @@ public class WatermarkConsumerBackgroundService : BackgroundService
                 {
                     var watermarkText = "techcareer.net";
                     var font = new Font("Arial", 50, FontStyle.Bold);
-                    var brush = new SolidBrush(Color.FromArgb(100, Color.Green));
-                    var point = new PointF(image.Width - 200, image.Height - 50);
+                    var brush = new SolidBrush(Color.FromArgb(100, Color.White));
+
+                   
+                    var textSize = graphics.MeasureString(watermarkText, font);
+
+                   
+                    var x = image.Width - textSize.Width - 30; 
+                    var y = image.Height - textSize.Height - 30; 
+                    var point = new PointF(x, y);
+
+                    
                     graphics.DrawString(watermarkText, font, brush, point);
                 }
 
-                
-                string filePath = Path.Combine("", Guid.NewGuid().ToString() + ".png");
-                image.Save(filePath);
+                using (var outputStream = new MemoryStream())
+                {
+                    image.Save(outputStream, System.Drawing.Imaging.ImageFormat.Png);
+                    outputStream.Position = 0;
 
-                
-                string newImageUrl = "" + Path.GetFileName(filePath);
-                return newImageUrl;
+                    
+                    var account = new CloudinaryDotNet.Account(
+                        "dzh0eynf2", 
+                        "696126443225774",     
+                        "mPMuD6fneefukKlKO_IQ6lNUjiY"   
+                    );
+
+                    var cloudinary = new CloudinaryDotNet.Cloudinary(account);
+
+                  
+                    var uploadParams = new CloudinaryDotNet.Actions.ImageUploadParams
+                    {
+                        File = new CloudinaryDotNet.FileDescription("watermarked_image", outputStream),
+                        PublicId = Guid.NewGuid().ToString(), 
+                        Folder = "techcareer" 
+                    };
+
+                    var uploadResult = await cloudinary.UploadAsync(uploadParams);
+                    return uploadResult?.SecureUrl?.ToString();
+                }
             }
         }
     }

@@ -39,10 +39,10 @@ IMapper mapper,RabbitMQPublisher rabbitMQPublisher) : IVideoEduService
         return ReturnModel<VideoEduResponseDto>.Success(videoEduResponseDto,VideoEduMassages.VideoEduListedById);
     }
 
-    [ValidationAspect(typeof(CreateVideoEduRequestValidator))]
-    [LoggerAspect]
-    [ClearCacheAspect(cacheGroupKey: "GetVideoEducation")]
-    [AuthorizeAspect(roles:"Admin")]
+    //[ValidationAspect(typeof(CreateVideoEduRequestValidator))]
+    //[LoggerAspect]
+    //[ClearCacheAspect(cacheGroupKey: "GetVideoEducation")]
+    ////[AuthorizeAspect(roles:"Admin")]
     public async Task<ReturnModel<CreateVideoEduResponseDto>> CreateAsync(CreateVideoEduRequestDto request)
     {
         await videoEduBusinessRules.IsVideoTitleExist(request.Title);

@@ -29,7 +29,7 @@ public sealed class VideoEduBusinessRules(IVideoEduRepository videoEduRepository
     public async Task IsVideoTitleExist(string videoTitle)
     {
         bool isVideoEduExist = await videoEduRepository.AnyAsync(predicate:x => x.Title==videoTitle,enableTracking: false);
-        if (!isVideoEduExist)
+        if (isVideoEduExist)
         {
             throw new BusinessException(VideoEduMassages.VideoDoesNotExist);
         }
